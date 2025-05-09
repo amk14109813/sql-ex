@@ -10,6 +10,30 @@ From
 
 
 -- ??????????????
+/*Задание: 113 
+WITH total_paint AS (SELECT utV.V_COLOR, SUM(utB.B_VOL) AS total_color
+FROM utB
+INNER JOIN utV
+ON utB.B_V_ID=utV.V_ID
+GROUP BY utV.V_COLOR),
+black_squares AS (
+SELECT COUNT(DISTINCT utQ.Q_ID)*255 AS black_number
+FROM utQ 
+LEFT JOIN utB ON utQ.Q_ID = utB.B_Q_ID
+WHERE utB.B_Q_ID IS NULL),
+total_squares AS (SELECT COUNT(DISTINCT utB.B_Q_ID)*255 AS color_number
+FROM utB),
+red AS (SELECT (ts.color_number+bs.black_number-tp.total_color) AS red 
+FROM total_paint tp, total_squares ts, black_squares bs
+WHERE tp.V_COLOR='R'),
+blue AS (SELECT (ts.color_number++bs.black_number-tp.total_color) AS blue 
+FROM total_paint tp, black_squares bs, total_squares ts 
+WHERE tp.V_COLOR='B'),
+green AS (SELECT (ts.color_number+bs.black_number-tp.total_color) AS green 
+FROM total_paint tp, total_squares ts, black_squares bs 
+WHERE tp.V_COLOR='G')
+SELECT r.red, g.green, b.blue
+FROM red r, green g, blue b
 
 
 /*Задание: 114 (Serge I: 2003-04-08)
